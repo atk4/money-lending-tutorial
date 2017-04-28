@@ -8,4 +8,16 @@ I know!
 
 ## This is actually a tutorial!
 
-In this repository you will find a tutorial and an actual implementation for the problem described above. To keep things interesting, we have structured 
+In this repository you will find a tutorial and an actual implementation for the problem described above. To show you progression in how the app was being created, we kept a git branch for each major milestone in the history of the application.
+
+You are currently on a branch `master` which contains a version 0.1 of the application.
+
+Live Application link: https://money-lending-tutorial.herokuapp.com
+
+## What Next?
+
+Clone this repository locally and start reading [Tutorial - Step 1](tutorial/step1.md). Follow all instructions carefully!
+
+If you have never used [Agile Toolkit](http://agiletoolkit.org/) before, you should first complete the introduction section.
+
+## [>> Tutorial - Step 1](tutorial/step1.md)
