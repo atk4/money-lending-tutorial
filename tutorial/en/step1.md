@@ -60,13 +60,13 @@ $app = new MyApp();
 
 Opening it up in your browser, yous hould see the application layout like this:
 
-![Screen Shot 2017-04-28 at 23.45.00](Screen Shot 2017-04-28 at 23.45.00.png)
+![admin screen](step1-admin-page.png)
 
 ## Setting up the Database
 
 We are buliding a multi-user application, so you'll need a table for storing user accounts. Each account has many contacts and each contact has many loans. Here is how my database schema looks like:
 
-![Screen Shot 2017-04-28 at 23.21.42](Screen Shot 2017-04-28 at 23.21.42.png)
+![mysql workbennch](step1-mysql-workbench.png)
 
 Here I include SQL dump, which you can import into MySQL:
 
@@ -140,7 +140,7 @@ $app->layout->add('CRUD')->setModel(new User($app->db));
 
  Refresh the `admin.php` page and it will have a fully functional CRUD element where you can add a few users:
 
-![Screen Shot 2017-04-28 at 23.50.51](Screen Shot 2017-04-28 at 23.50.51.png)
+![admin crud](step1-admin-crud.png)
 
 Be sure to remember what password you have used.
 
@@ -191,7 +191,11 @@ $form->addField('password');
 $form->buttonSave->set('Login');
 ```
 
-I added an extra line that changes the label of the default 'Save' button to 'Login'. Next you need to add form submit callback which will check if email/password correspond to any user:
+I added an extra line that changes the label of the default 'Save' button to 'Login'. 
+
+![step1-login-validation](step1-login-validation.png)
+
+Next you need to add form submit callback which will check if email/password correspond to any user:
 
 ``` php
 $form->onSubmit(function($form) { 
