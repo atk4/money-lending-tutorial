@@ -21,3 +21,8 @@ Clone this repository locally and start reading [Tutorial - Step 1](tutorial/ste
 If you have never used [Agile Toolkit](http://agiletoolkit.org/) before, you should first complete the introduction section.
 
 ## [>> Tutorial - Step 1](tutorial/step1.md)
+
+Footnotes:
+
+-   help us translate this tutorial into your language. Simply create PR and add translations for all tutorial steps.
+-   if you find any bugs, please open issue or PR.
