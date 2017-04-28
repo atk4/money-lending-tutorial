@@ -168,26 +168,26 @@
         },
         {
             "name": "atk4/ui",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/atk4/ui.git",
-                "reference": "096099c8901acef31afa15f106d0e6ca6bb3bae0"
+                "reference": "a93bf2bdc45643af57e2259745b8e2e6f6fe9688"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atk4/ui/zipball/096099c8901acef31afa15f106d0e6ca6bb3bae0",
-                "reference": "096099c8901acef31afa15f106d0e6ca6bb3bae0",
+                "url": "https://api.github.com/repos/atk4/ui/zipball/a93bf2bdc45643af57e2259745b8e2e6f6fe9688",
+                "reference": "a93bf2bdc45643af57e2259745b8e2e6f6fe9688",
                 "shasum": ""
             },
             "require": {
                 "atk4/core": "^1.2",
                 "atk4/data": "^1.1",
+                "fzaninotto/faker": "*",
                 "php": ">=5.6.0"
             },
             "require-dev": {
                 "codeclimate/php-test-reporter": "*",
-                "fzaninotto/faker": "*",
                 "phpunit/phpunit": "<6"
             },
             "type": "library",
@@ -222,7 +222,55 @@
                 "web",
                 "widget"
             ],
-            "time": "2017-04-13 01:54:20"
+            "time": "2017-04-28 22:04:23"
+        },
+        {
+            "name": "fzaninotto/faker",
+            "version": "v1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "44f9a286a04b80c76a4e5fb7aad8bb539b920123"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/44f9a286a04b80c76a4e5fb7aad8bb539b920123",
+                "reference": "44f9a286a04b80c76a4e5fb7aad8bb539b920123",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3|^7.0"
+            },
+            "require-dev": {
+                "ext-intl": "*",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": []
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2016-04-29 12:21:54"
         }
     ],
     "packages-dev": [],

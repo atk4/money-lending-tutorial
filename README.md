@@ -16,11 +16,11 @@ Live Application link: https://money-lending-tutorial.herokuapp.com
 
 ## What Next?
 
-Clone this repository locally and start reading [Tutorial - Step 1](tutorial/step1.md). Follow all instructions carefully!
+Clone this repository locally and start reading [Tutorial - Step 1](tutorial/en/step1.md). Follow all instructions carefully!
 
 If you have never used [Agile Toolkit](http://agiletoolkit.org/) before, you should first complete the introduction section.
 
-## [>> Tutorial - Step 1](tutorial/step1.md)
+## [>> Tutorial - Step 1](tutorial/en/step1.md)
 
 Footnotes:
 

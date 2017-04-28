@@ -1,9 +1,25 @@
 <?php
+require'lib.php';
 
-require'vendor/autoload.php';
+$app = new MyApp(false);
 
-$app = new \atk4\ui\App('Money Lending App v0.1');
-$app->initLayout('Centered');
 
-$app->layout->add('Text')->addParagraph('This is a very first version of your app that does not do anyting just yet.');
-$app->layout->add(['Button', 'Read the tutorial', 'blue'])->link('https://github.com/atk4/money-lending-tutorial');
+$form = $app->layout->add('Form');
+$form->addField('email');
+$form->addField('password');
+$form->buttonSave->set('Login');
+
+$form->onSubmit(function($form) { 
+
+    $m = new User($form->app->db);
+    $m->tryLoadBy('email', $form->model['email']);
+
+    if (!$m->loaded()) { 
+        return $form->error('email', 'No such user');
+    }
+
+    return 'OK for now';
+});
+
+
+$app->layout->add(['Label', 'Developed with Agile Toolkit. Click to learn more.', 'right ribbon gray'])->link('https://github.com/atk4/money-lending-tutorial');
