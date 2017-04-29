@@ -348,4 +348,56 @@ phpinfo();
 
 Start here: https://devcenter.heroku.com/articles/getting-started-with-php#introduction
 
-Once your application is deployed, you will probably see error about being unable to connect to MySQL server. Heroku uses add-ons
+Commit your local repository changes and deploy them into heroku. Once your application is deployed, you will probably see error about being unable to connect to MySQL server. Provision `cleardb` add-on for heroku:
+
+```bash
+heroku addons:create cleardb:ignite
+heroku config | grep CLEARDB_DATABASE_URL
+```
+
+The second command should give you credentials necessary to connect to your MySQL hosted by Heroku. Use your MySQL client to connect and import your initial database. Next you'll need to update the `app.php` to look for `CLEARDB_DATABASE_URL` variable and use it if found:
+
+``` php
+        if (isset($_ENV['CLEARDB_DATABASE_URL'])) {
+            // we are on Heroku
+            preg_match(
+              '|([a-z]+)://([^:]*)(:(.*))?@([A-Za-z0-9\.-]*)(/([0-9a-zA-Z_/\.]*))|',
+              $_ENV['CLEARDB_DATABASE_URL'],
+              $matches
+            );
+
+            $dsn=array(
+                $matches[1].':host='.$matches[5].';dbname='.$matches[7],
+                $matches[2],
+                $matches[4]
+            );
+            $this->db = new \atk4\data\Persistence_SQL($dsn[0], $dsn[1], $dsn[2]);
+        } else {
+            // Not on Heroku
+            $this->db = new \atk4\data\Persistence_SQL(
+              'mysql:host=127.0.0.1;dbname=money_lending', 
+              'root', 
+              'root'
+            );
+        }
+```
+
+Re-deploy your application. If it still won't connect to your database use `test.php` and look for Environment variables for CLEARDB connect string.
+
+## Step 1 complete!
+
+WELL DONE! You have completed step 1 of this tutorial.
+
+**STEP 2 is not written yet! Come back soon!**
+
+To see Step 1 in action: https://money-lending-tutorial.herokuapp.com
+
+To see Final version of Step 2, switch to branch "step2":
+
+``` shell
+git checkout step2
+```
+
+Or click here: https://github.com/atk4/money-lending-tutorial/tree/step2
+
+*Add more stuff to your app and share with us by tweeting with hashtag #atk4*
