@@ -191,11 +191,7 @@ $form->addField('password');
 $form->buttonSave->set('Login');
 ```
 
-I added an extra line that changes the label of the default 'Save' button to 'Login'. 
-
-![step1-login-validation](step1-login-validation.png)
-
-Next you need to add form submit callback which will check if email/password correspond to any user:
+I added an extra line that changes the label of the default 'Save' button to 'Login'. Next you need to add form submit callback which will check if email/password correspond to any user:
 
 ``` php
 $form->onSubmit(function($form) { 
@@ -215,4 +211,141 @@ The `onSubmit` method will be called on form submission and because closures in 
 
 Agile Toolkit automatically sets the `app` property of all the objects to point to `MyApp`, which makes it very easy for me to access the $db property. Creating new object User will not perform any loading just yet, so teh next line will attempt to find user with a specified email. Even though I didn't specify any `Model` to the form just yet, it will create an anonymous model and populate fields. In 95% of use-cases you would want to use Form with `setModel`.
 
-Form's method `error` returns Action for displaying error on a form just below a specified field and containing specified text. I can either return a single error or array of multiple errors. 
+Form's method `error` returns Action for displaying error on a form just below a specified field and containing specified text. I can either return a single error or array of multiple errors:
+
+![step1-login-validation](step1-login-validation.png)
+
+Next, lets make sure the password is verified correctly:
+
+``` php
+    if ($m['password'] != $form->model['password']) {
+        return $form->error('password', 'Incorrect password');
+    }
+```
+
+If everything was successful we should probably store 'user_id' inside session:
+
+``` php
+    $_SESSION['user_id'] = $m->id;
+```
+
+And finally, instead of returning string and showing alert, lets return a custom expression which will redirect us to a different page. It contains a very simple snippet of JavaScript code:
+
+``` php
+    return new \atk4\ui\jsExpression('document.location=[]', ['contact.php']);
+```
+
+In here I have used `[]` to reference first argument to an expression. That's a preferred way to pass any variables into your JavaScript snippets. Values passed through arguments will be automatically JSON-encoded, so you don't have to worry about JavaScript injections.
+
+## Showing list of Contacts
+
+First we need to define model for a Contact:
+
+``` php
+class Contact extends \atk4\data\Model {
+    public $table = 'contact';
+
+    function init()
+    {
+        parent::init();
+
+        $this->addFields([
+            'name','email','phone_number'
+        ]);
+    }
+}
+```
+
+Since models `Contact` and `User` are related, lets link them with `hasOne` and `hasMany`.
+
+``` php
+		// into Contact::init() add:
+        $this->hasOne('user_id', new User());
+
+		// into User::init() add:
+        $this->hasMany('Contact', new Contact());
+```
+
+We will also must only show 'Contacts' of a currently-logged-in user. Remember that `MyApp::$user` property we have declared earlier? It's time to add code to initialize it. Go to `MyApp` and update your authentication code:
+
+``` php
+        if (!$authenticate) {
+            $this->initLayout('Centered');
+            return;
+        }
+		// Add code below...
+
+        if (!isset($_SESSION['user_id'])) {
+            $this->initLayout('Centered');
+            $this->layout->add(['Message', 'Login Required', 'error']);
+            $this->layout->add(['Button', 'Login', 'primary'])->link('index.php');
+            exit;
+        }
+
+        $this->user = new User($this->db);
+        $this->user->load($_SESSION['user_id']);
+        $this->layout->menu->addItem('Logged in as '.$this->user['name']);
+```
+
+Again - the logic is quite simple - no session variable - display an error and stop. If user_id is stored in session - load User data and store inside `MyApp`. With that, other parts of my application can now access `$app->user`. 
+
+Finally you can go to your `contact.php` page and enter:
+
+```php
+<?php
+require'lib.php';
+$app = new MyApp();
+$app->layout->add('CRUD')->setModel($app->user->ref('Contact'));
+```
+
+Here we are essentially saying - display Contact that relate to a currently logged in user. Use CRUD to add more records and double-check that they will automatically belong to your user by looking into MySQL table.
+
+Using `ref()` correctly will help you avoid many errors in your applications.
+
+## Add Logout and Redirects
+
+We still don't have an option for user to log-out. Create `logout.php` file with this:
+
+``` php
+<?php
+require'lib.php';
+
+unset($_SESSION['user_id']);
+header('Location: index.php');
+```
+
+Again - very straightforward and simple. Should a logged-in user arrive at the `index.php` page, we should probably redirect him, so add this code at the top of your `index.php` file.
+
+``` php
+// After require'lib.php'
+if (isset($_SESSION['user_id'])) {
+    header('Location: contact.php');
+    exit;
+}
+```
+
+All that is missing is a 'Log-out' menu item. Add it for `MyApp` class:
+
+``` php
+        $this->layout->leftMenu->addItem(['Logout', 'icon'=>'sign out'], 'logout.php');
+```
+
+With this, your multi-user application is now complete:
+
+![step1-final-application](step1-final-application.png)
+
+Try logging-in with different accounts, your application should work perfectly!
+
+## Deploy to Heroku (optional)
+
+It would be great if you could show your application to your friends, so lets deploy it into Heroku. Before you do, though, create a file `test.php` containing:
+
+``` php
+<?php
+  
+phpinfo();
+```
+
+Start here: https://devcenter.heroku.com/articles/getting-started-with-php#introduction
+
+Once your application is deployed, you will probably see error about being unable to connect to MySQL server. Heroku uses add-ons
